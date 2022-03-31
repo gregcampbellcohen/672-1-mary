@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8 />
+  <title>Dream Vacation</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" />
+  <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,900i" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Ramabhadra:300,300i,400,900i" rel="stylesheet" />
+  <style>
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+    font-family: 'Poppins', sans-serif; /* change made here */
+    font-weight: 300; /* addition here */
+    color: #3d3d3d;
+    font-size: 100%;
+}
+
+p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1em;
+  line-height: 1.5em;
+}
+
+a {
+  color: #ff3300;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  font-family: 'Poppins', sans-serif;
+  padding-left: 20px;
+}
+
+li {
+  margin: 10px 0;
+}
+
+  header, section, footer {
+  width: 80%;
+  margin: 10px auto;
+}
+
+h1 {
+    font-size: 2em;
+    font-family: 'Ramabhadra', sans-serif;
+    font-weight: 900; /* addition here */
+    letter-spacing: .04em;
+}
+
+h2 {  
+    font-size: 1.5em;
+    font-family: 'Ramabhadra', sans-serif;
+    font-weight: 300; /* addition here */
+    letter-spacing: .04em;
+}
+
+#map {
+  width: 100%;
+  height: 540px;
+  margin: 10px auto;
+  border: 2px solid #d3d3d3;
+}
+
+.highlight {
+  color: #f05716; 
+  font-weight: bold;
+}
+
+.img-fill {
+    width: 100%;
+    height: auto;
+    margin: 10px 0;
+}
+
+.first-column {
+  float: left;
+  width: 49%;
+  padding-right: 2%;  
+}
+
+.second-column {
+  float: left;
+  width: 49%;
+}
+
+.row::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+@media screen and (max-width: 900px) {
+  .first-column,
+  .second-column {
+    width: 100%;
+    }
+}
+
+hr {
+  margin: 20px 0;
+  border: 0;
+  height: 1px;
+  background: #d3d3d3;
+}
+
+#caption {
+  margin: 0 0 20px 0;
+  display: block;
+}
+  </style>
+  <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>Title of map</h1>
+  </header>
+  <section>
+    <div class="row">
+      <div id='map'></div>
+      <div class="first-column">
+        <h2>About Kirkwall</h2>
+        <p><a href="https://en.wikipedia.org/wiki/Kirkwall">Kirkwall</a> is the largest city of Orkney, a cluster of islands ten miles off the coast of Scotland. In the ninth century, Orkney was annexed by Norway, and in the fifteenth century by Scotland. The islands are the site of some of Europe's oldest intact ruins. During the winter holidays, the residents of Kirkwall organize themselves into two mobs -- the 'Uppies' (those on the northern half of the city) and 'Doonies' (those from the South) -- to play the Kirkwall Ba Game, a Scottish predecessor to rugby. The objective of the game is to carry an ornamental ball to the other side of the city by any means necessary. There are no formal rules to the game, and while there is universally observed etiquette, it is not uncommon for players to suffer cracked ribs or broken legs. I would like to observe this tradition in person.</p>
+        <ul>
+        <li>See my projects on GitHub: <a href="https://github.com/gregcampbellcohen">gregcampbellcohen</a></li>
+        <li>Follow me on twitter: <a href="https://twitter.com/gcampbellcohen">@gcampbellcohen</a></li>
+        </ul>
+      </div>
+      <div class="second-column">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Kirkwall_Harbour.jpg" alt="Kirkwall Harbour" class="img-fill" id="photo">
+        <div id="caption">
+          Kirkwall, Orkney. <a href="https://commons.wikimedia.org/wiki/File:Kirkwall_Harbour.jpg">Uploaded by user Stevekeiretsu</a>, Wikimedia Commons.
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <hr>
+    <a href="https://newmapsplus.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png" alt="University of Kentucky New Maps Plus">
+      </a>
+
+  <a href="https://uky-gis.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png" alt="University of Kentucky Department of Geography">
+  </a>
+  </footer>
+
+  <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>  
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <script>
+    document.querySelector('h1').innerHTML = 'Kirkwall, Orkney';
+    var map = document.getElementById('map');
+    map.style.background = '#4d4a9f';
+    //map.addEventListener('click', function() {
+    //this.style.width = '50%';   
+    // });
+
+    // A solution to the challenge
+
+    // You'll need to create an id for your photograph
+    var click_photo = document.getElementById('photo')
+    // Add you'll need to select the caption, too
+    var click_caption = document.getElementById('caption')
+
+    // Select an amusing photo to swap out
+    click_photo.addEventListener('click', function() {
+      // Check where browser sees this resource
+      console.log(this.src)
+      // Add includes() method to check if URL has image
+      if (this.src.includes("Kirkwall_Harbour.jpg")) {
+        this.src = "path/to/new/image.jpg"
+        this.alt = "Alternate text description of image"
+        caption.innerHTML = `New caption (click photo)`
+      } else {
+        this.src = "https://upload.wikimedia.org/wikipedia/commons/9/91/Kirkwall_Harbour.jpg" 
+        this.alt= "Kirkwall Harbour"
+        caption.innerHTML = 'Kirkwall, Orkney. <a href="https://commons.wikimedia.org/wiki/File:Kirkwall_Harbour.jpg">Uploaded by user Stevekeiretsu</a>, Wikimedia Commons. (click photo)'
+      }
+    });
+
+    var options = {
+    center: [58.9847, -2.9622],
+    zoom: 12
+    }
+
+    var map = L.map('map', options);
+
+    var basemap_url = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
+
+    var basemap_attributes = {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+    subdomains: 'abcd',
+    maxZoom: 19
+    }
+
+    var tiles = L.tileLayer(basemap_url, basemap_attributes).addTo(map);
+
+    var message = 'Kirkwall, Orkney';
+
+    L.marker(map.getCenter())
+    .bindTooltip(message)
+    .addTo(map)
+    .openTooltip();
+  </script>
+
+</body>
+
+</html>
